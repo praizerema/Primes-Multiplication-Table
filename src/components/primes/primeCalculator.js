@@ -1,3 +1,4 @@
+// Primes multiplication contains an input field which takes value number as number of primes to be displayed.
 import React, { Component } from "react";
 
 class PrimeCalculator extends Component {
@@ -5,29 +6,25 @@ class PrimeCalculator extends Component {
     super(props);
     this.state = {
       no_of_prime: "",
-      prime_count:""
-
+      prime_count: "",
+      productTable: ""
     };
   }
   handlePrime = e => this.setState({ no_of_prime: e.target.value });
-submit(e){
+  submit(e) {
     e.preventDefault();
     if (this.state.no_of_prime < 1) {
-        alert("Enter any number from 1");
-        return 0;
+      alert("Enter any number from 1");
+      return 0;
+    } else {
+      this.makePrimesMultTable(this.state.no_of_prime);
     }
-    else{
-        this.PrimeMultiple();
+  }
 
-    }
-}
-
-PrimeMultiple(){
-// alert("success") 
- let n = this.state.no_of_prime
-const primesArray = n =>{
-    let primes = []
-    let i = 0
+  // Store first n primes, use isPrime to determine if a given number is prime
+  generatePrimesArray = n => {
+    let primes = [];
+    let i = 0;
 
     while (primes.length < n) {
       if (this.isPrime(i)) {
@@ -36,16 +33,16 @@ const primesArray = n =>{
 
       i += 1;
     }
+
     return primes;
   };
-  console.log(primesArray);
 
-   // Determine if a number is prime, called by generatePrimesList
-   const isPrime = (number) => {
+  // Determine if a number is prime, called by generatePrimesList
+  isPrime = number => {
     if (number <= 1) {
       return false;
     }
-    //Defining a prime number..
+
     const numberSqrt = Math.floor(Math.sqrt(number));
     let i = 2;
     while (i <= numberSqrt) {
@@ -58,8 +55,9 @@ const primesArray = n =>{
 
     return true;
   };
+
   // Complete multiplication of primes to fill table
-  const multiplyPrimes = (primesArray) => {
+  multiplyPrimes = primesArray => {
     if (primesArray.length === 0) {
       return null;
     }
@@ -77,116 +75,89 @@ const primesArray = n =>{
     });
 
     return multipliedPrimes;
-  }
-  // Display table with the values from multiplyPrimes()
-  const displayTable = (arraysToPrint) => {
-    if (arraysToPrint === null) {
-      console.log("Oops, you told me you wanted zero primes! So here's a nonexistent table.");
-      return;
-    }
-    const arrayIdx = arraysToPrint.length - 1;
-    const spacesRequired = arraysToPrint[arrayIdx][arrayIdx].toString().length + 1;
+  };
 
+  // Display table with the values from multiplyPrimes()
+  displayTable = (arraysToPrint, TableHead) => {
+    let productTable = TableHead;
+    const arrayIdx = arraysToPrint.length - 1;
+    const spacesRequired = arraysToPrint[arrayIdx][arrayIdx].toString().length;
     arraysToPrint.forEach(function(array) {
-      let rowString = '';
+      let rowString = `<tr>`;
       array.forEach(function(product) {
         if (product === null) {
-          rowString = rowString.concat(' '.repeat(spacesRequired));
-        } 
-        else {
-         let productLength = product.toString().length;
-          rowString = rowString.concat(' '.repeat(spacesRequired - productLength));
-          rowString = rowString.concat(product.toString());
+          rowString = rowString.concat(" ".repeat(spacesRequired));
+        } else {
+          rowString = rowString.concat(`<td>${product.toString()}</td>`);
         }
       });
-
-      console.log(rowString);
+      rowString = rowString.concat("</tr>");
+      productTable = productTable.concat(rowString);
     });
-  }
-const primesMultTable = n => {
-    let primesList = this.generatePrimesArray(n);
+    this.setState({ productTable });
+  };
+
+  makePrimesMultTable = n => {
+    let primesList = this.generatePrimesArray(n)
+;
+    const TableHead = this.generateTableHead(n)
+;
     let multipliedPrimes = this.multiplyPrimes(primesList);
-    this.displayTable(multipliedPrimes);
-    // return primesMultTable;
-  }
-  let primes = this.PrimeMultiple;
-  primes.primesMultTable(3);
-}
+    // console.log(multipliedPrimes, TableHead);
+    this.displayTable(multipliedPrimes, TableHead);
+  };
 
-
-//  primes = primes.primesMultTable(22);
+  generateTableHead = n => {
+    const tags = this.generatePrimesArray(n)
+;
+    return `<tr className="thead-light"><th>X</th>${tags
+      .map(tag => `<th>${tag}</th>`)
+      .toString()
+      .replace(/,/g, "")}</tr>`;
+  };
 
   render() {
-  
     return (
-      <div className="row">
-        <div className="col-sm-4">
-          <form
-            action="post"
-            onSubmit={e => {
-              this.submit(e);
-            }}
-          >
-            <div className="form-group">
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Enter the number of primes"
-                onChange={this.handlePrime.bind(this)}
-                value={this.state.no_of_prime}
-                required
-              />
-            </div>
-            <div className="btn btn-success">
-              <button>Enter</button>
-            </div>
-          </form>
-        </div>
-        <div className="col-sm-8">
-          <div className="contactWrap m-4">
+      <div className="container p-3">
+        <div className="row">
+          {" "}
+          <div className="col-sm-12 d-grid">
             <h3 className="mb-4 text-center">Primes Multiplication Table</h3>
-            <table className="table table-bordered table-striped thead-dark">
-              <tbody>
-                <tr className="thead-light">
-                  <th>X</th> <th>2</th> <th>3</th>
-                  <th>5</th>
-                  <th>7</th>
-                  <th>11</th>
-                  <th>13</th>
-                  <th>17</th>
-                  <th>19</th>
-                  <th>23</th>
-                  <th>29</th>
-                </tr>
-                <tr>
-                  <td>2</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                </tr>
-                <tr>
-                  <td>11</td>
-                </tr>
-                <tr>
-                  <td>13</td>
-                </tr>
-                <tr>
-                  <td>19</td>
-                </tr>
-                <tr>
-                  <td>23</td>
-                </tr>
-                <tr>
-                  <td>29</td>
-                </tr>
-              </tbody>
-            </table>
+          </div>
+          <div className="col-sm-12 d-grid">
+              {/* Form with an input field of type number to take prime count and a button to submit the input value */}
+            <form
+              action="post"
+              onSubmit={e => {
+                this.submit(e);
+              }}
+            >
+              <div className="form-group">
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter the number of primes"
+                  onChange={this.handlePrime.bind(this)}
+                  value={this.state.no_of_prime}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-success float-right">
+                  Enter
+                </button>
+              </div>
+            </form>
+          </div>
+          {/* Table displays the primes multiplication table */}
+          <div className="col-sm-12 d-table">
+            <div className="contactWrap m-4">
+              <table className="table table-bordered table-striped thead-dark">
+                <tbody
+                  dangerouslySetInnerHTML={{ __html: this.state.productTable }}
+                />
+              </table>
+            </div>
           </div>
         </div>
       </div>
