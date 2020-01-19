@@ -1,6 +1,6 @@
-// Primes multiplication contains an input field which takes value number as number of primes to be displayed.
+// Primes multiplication contains an input field which takes value number 
+//as number of primes to be displayed. Enter any positive number and click Enter to create your primes table
 import React, { Component } from "react";
-
 class PrimeCalculator extends Component {
   constructor(props) {
     super(props);
@@ -125,7 +125,7 @@ class PrimeCalculator extends Component {
             <h3 className="mb-4 text-center">Primes Multiplication Table</h3>
           </div>
           <div className="col-sm-12 d-grid">
-              {/* Form with an input field of type number to take prime count and a button to submit the input value */}
+              {/* Form with an input field oftype number to take prime count and a button to submit the input value */}
             <form
               action="post"
               onSubmit={e => {
@@ -149,7 +149,7 @@ class PrimeCalculator extends Component {
               </div>
             </form>
           </div>
-          {/* Table displays the primes multiplication table */}
+          {/*This displays the primes multiplication table */}
           <div className="col-sm-12 d-table">
             <div className="contactWrap m-4">
               <table className="table table-bordered table-striped thead-dark">
