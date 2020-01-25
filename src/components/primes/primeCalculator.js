@@ -79,6 +79,7 @@ class PrimeCalculator extends Component {
 
   // Display table with the values from multiplyPrimes()
   displayTable = (arraysToPrint, TableHead) => {
+    delete arraysToPrint[0];
     let productTable = TableHead;
     const arrayIdx = arraysToPrint.length - 1;
     const spacesRequired = arraysToPrint[arrayIdx][arrayIdx].toString().length;
@@ -125,7 +126,8 @@ class PrimeCalculator extends Component {
             <h3 className="mb-4 text-center">Primes Multiplication Table</h3>
           </div>
           <div className="col-sm-12 d-grid">
-              {/* Form with an input field oftype number to take prime count and a button to submit the input value */}
+              {/* Form with an input field oftype number to take prime count and
+               a button to submit the input value */}
             <form
               action="post"
               onSubmit={e => {
@@ -165,3 +167,5 @@ class PrimeCalculator extends Component {
   }
 }
 export default PrimeCalculator;
+
+
